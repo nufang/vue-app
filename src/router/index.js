@@ -11,6 +11,18 @@ import ShopInfo from '../pages/Shop/ShopInfo/ShopInfo'
 import ShopGoods from '../pages/Shop/ShopGoods/ShopGoods'
 import ShopRatings from '../pages/Shop/ShopRatings/ShopRatings'
 
+//路由懒加载， js打包的时候会分开，每个路由对应一个js文件
+
+// const Msite = () => import ('../pages/Msite/Msite.vue')
+// const Search = () => import ('../pages/Search/Search.vue')
+// const Order = () => import ('../pages/Order/Order.vue')
+// const Profile = () => import ('../pages/Profile/Profile.vue')
+// const Login = () => import ('../pages/Login/Login.vue')
+// const Shop = () => import ('../pages/Shop/Shop')
+// const ShopInfo = () => import ('../pages/Shop/ShopInfo/ShopInfo')
+// const ShopGoods = () => import ('../pages/Shop/ShopGoods/ShopGoods')
+// const ShopRatings = () => import ('../pages/Shop/ShopRatings/ShopRatings')
+
 Vue.use(Router)
 
 export default new Router({
@@ -18,7 +30,8 @@ export default new Router({
     {
       path: '/Msite',
       name: 'Msite',
-      component: Msite,
+      component: Msite, //返回路由组件的函数，只有执行此函数的时候才会加载路由组件，
+                        //第一次请求路由组件的时候执行
       meta: {
         showFooter: true
       }

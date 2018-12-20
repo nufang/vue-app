@@ -9,9 +9,17 @@ import App from './App'
 import router from './router'
 import store from './store'
 
+import VueLazyload from 'vue-lazyload'
+
 import './mock/mockServer'
+import loading from './common/imgs/loading.gif'
+import './filters'      //自定义过滤器
+
 Vue.component(Button.name, Button) //<mt-button>
 
+Vue.use(VueLazyload, { // 内部自定义一个指令lazy
+  loading
+})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

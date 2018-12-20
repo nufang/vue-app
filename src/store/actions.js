@@ -9,7 +9,11 @@ import {
   RESET_USER_INFO,
   RECEIVE_RATINGS,
   RECEIVE_INFO,
-  RECEIVE_GOODS
+  RECEIVE_GOODS,
+  INCREMENT_FOOD_COUNT,
+  DECREMENT_FOOD_COUNT,
+  CLEAR_CART,
+  RECEIVE_SEARCH_SHOPS
 } from './mutations-types'
 
 import {
@@ -20,7 +24,8 @@ import {
   reqLogout,
   reqShopGoods,
   reqShopInfo,
-  reqShopRatings
+  reqShopRatings,
+  reqSearchShop
 } from "../api";
 
 export default {
@@ -73,19 +78,23 @@ export default {
   },
 
   //商家
-  async getShopRatings({commit}){
+  async getShopRatings({commit}, callback){
     const result = await reqShopRatings();
     if(result.code === 0){
       const ratings = result.data;
-      commit(RECEIVE_RATINGS,{ratings})
+      commit(RECEIVE_RATINGS,{ratings});
+      //更新之后返回一个状态值
+      callback&&callback();
     }
   },
 
-  async getShopGoods({commit}){
+  async getShopGoods({commit},callback){
     const result = await reqShopGoods();
     if(result.code === 0){
       const goods = result.data;
       commit(RECEIVE_GOODS,{goods})
+      //更新之后返回一个状态值
+      callback&&callback();
     }
   },
 
@@ -96,4 +105,31 @@ export default {
       commit(RECEIVE_INFO,{info})
     }
   },
+
+  //同步更新food中的count值
+  updateFoodCount({commit},{isAdd,food}){
+    if(isAdd){
+      commit(INCREMENT_FOOD_COUNT,{food})
+    }else {
+      commit(DECREMENT_FOOD_COUNT,{food})
+    }
+  },
+
+  //同步清空购物车
+  clearCart({commit}) {
+    commit(CLEAR_CART)
+  },
+
+  async searchShops({commit,state}, keyword){
+    const geohash = state.latitude +','+ state.longitude;
+    const result = await reqSearchShop(geohash, keyword);
+
+    if(result.code === 0){
+      const searchShops = result.data;
+      commit(RECEIVE_SEARCH_SHOPS, {searchShops})
+
+    }
+  },
+
+
 }
